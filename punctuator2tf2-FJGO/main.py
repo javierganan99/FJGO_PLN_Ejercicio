@@ -3,7 +3,7 @@ from __future__ import division
 from time import time
 
 import models, data
-import pickle
+import pickle5 as pickle # Cambio realizado para la ejecución en google colab
 import sys
 import os.path
 
