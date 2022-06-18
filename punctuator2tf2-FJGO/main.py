@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 
 MAX_EPOCHS = 50
-MINIBATCH_SIZE = 1
+MINIBATCH_SIZE = 32
 CLIPPING_THRESHOLD = 2.0
 PATIENCE_EPOCHS = 1
 
