@@ -34,7 +34,6 @@ MAX_SEQUENCE_LEN = 200
 # Nombre de los ficheros donde se guardan las vectorizaciones 
 TRAIN_FILE = os.path.join(DATA_PATH, "train")
 DEV_FILE = os.path.join(DATA_PATH, "dev")
-TEST_FILE = os.path.join(DATA_PATH, "test")
 
 # Nombre de los ficheros donde se guarda el vocabulario y los signos de puntuación
 WORD_VOCAB_FILE = os.path.join(DATA_PATH, "vocabulary")
@@ -212,12 +211,11 @@ def write_processed_dataset(input_files, output_file):
 
 # Hace un split de el corpus de entrenamiento entre entrenamiento y validación
 def create_dev_test_train_split_and_vocabulary(
-    root_path, build_vocabulary, train_output, dev_output, test_output
+    root_path, build_vocabulary, train_output, dev_output
 ):
 
     train_txt_files = []
     dev_txt_files = []
-    test_txt_files = []
 
     if build_vocabulary:
         word_counts = dict()
@@ -227,13 +225,10 @@ def create_dev_test_train_split_and_vocabulary(
 
             path = os.path.join(root, filename)
 
-            if filename.endswith(".test.txt"):
-                test_txt_files.append(path)
-
-            elif filename.endswith(".dev.txt"):
+            if filename.endswith("dev.txt"):
                 dev_txt_files.append(path)
 
-            else:
+            elif filename.endswith("train.txt"):
                 train_txt_files.append(path)
 
                 if build_vocabulary:
@@ -249,7 +244,7 @@ def create_dev_test_train_split_and_vocabulary(
 
     write_processed_dataset(train_txt_files, train_output)
     write_processed_dataset(dev_txt_files, dev_output)
-    write_processed_dataset(test_txt_files, test_output)
+    # write_processed_dataset(test_txt_files, test_output)
 
 
 if __name__ == "__main__":
@@ -267,6 +262,6 @@ if __name__ == "__main__":
         sys.exit("Data already exists")
 
     create_dev_test_train_split_and_vocabulary(
-        path, True, TRAIN_FILE, DEV_FILE, TEST_FILE
+        path, True, TRAIN_FILE, DEV_FILE
     )
 
