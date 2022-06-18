@@ -10,7 +10,7 @@ import codecs
 import fnmatch
 
 # Directorio para guardar los datos con los que etrena el modelo
-DATA_PATH = "data_model"
+DATA_PATH = "model_data"
 
 # Representa el final de frase
 END = "</S>"
@@ -32,13 +32,13 @@ MIN_WORD_COUNT_IN_VOCAB = 2
 MAX_SEQUENCE_LEN = 200
 
 # Nombre de los ficheros donde se guardan las vectorizaciones 
-TRAIN_FILE = os.path.join(DATA_PATH, "train.txt")
-DEV_FILE = os.path.join(DATA_PATH, "dev.txt")
-TEST_FILE = os.path.join(DATA_PATH, "test.txt")
+TRAIN_FILE = os.path.join(DATA_PATH, "train")
+DEV_FILE = os.path.join(DATA_PATH, "dev")
+TEST_FILE = os.path.join(DATA_PATH, "test")
 
 # Nombre de los ficheros donde se guarda el vocabulario y los signos de puntuación
-WORD_VOCAB_FILE = os.path.join(DATA_PATH, "vocabulary.txt")
-PUNCT_VOCAB_FILE = os.path.join(DATA_PATH, "punctuations.txt")
+WORD_VOCAB_FILE = os.path.join(DATA_PATH, "vocabulary")
+PUNCT_VOCAB_FILE = os.path.join(DATA_PATH, "punctuations")
 
 # Elegimos los signos de puntuación
 PUNCTUATION_VOCABULARY = {SPACE, ",", ".", "?", "!", ":", ";"}
@@ -179,12 +179,6 @@ def write_processed_dataset(input_files, output_file):
                             "#words: %d; #punctuations: %d"
                             % (len(current_words), len(current_punctuations))
                         )
-                        assert current_pauses == [] or len(current_words) == len(
-                            current_pauses
-                        ), (
-                            "#words: %d; #pauses: %d"
-                            % (len(current_words), len(current_pauses))
-                        )
 
                         # Sentence did not fit into subsequence - skip it
                         if last_eos_idx == 0:
@@ -192,7 +186,6 @@ def write_processed_dataset(input_files, output_file):
 
                             current_words = []
                             current_punctuations = []
-                            current_pauses = []
 
                             last_token_was_punctuation = True  # next sequence starts with a new sentence, so is preceded by eos which is punctuation
 
@@ -200,7 +193,6 @@ def write_processed_dataset(input_files, output_file):
                             subsequence = [
                                 current_words[:-1] + [word_vocabulary[END]],
                                 current_punctuations,
-                                current_pauses[1:],
                             ]
 
                             data.append(subsequence)
@@ -210,11 +202,10 @@ def write_processed_dataset(input_files, output_file):
                             current_punctuations = current_punctuations[
                                 last_eos_idx + 1 :
                             ]
-                            current_pauses = current_pauses[last_eos_idx + 1 :]
 
                         last_eos_idx = 0  # sequence always starts with a new sentence
 
-    print("%.2f%% UNK-s in %s" % (num_unks / num_total * 100, output_file))
+    #print("%.2f%% UNK-s in %s" % (num_unks / num_total * 100, output_file))
 
     with open(output_file, "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
