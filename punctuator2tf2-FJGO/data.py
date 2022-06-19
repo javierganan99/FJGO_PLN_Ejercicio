@@ -40,16 +40,15 @@ WORD_VOCAB_FILE = os.path.join(DATA_PATH, "vocabulary")
 PUNCT_VOCAB_FILE = os.path.join(DATA_PATH, "punctuations")
 
 # Elegimos los signos de puntuación
-PUNCTUATION_VOCABULARY = {SPACE, ",", ".", "?", "!", ":", ";"}
+PUNCTUATION_VOCABULARY = {SPACE, ",COMMA", ".PERIOD", "?QUESTIONMARK", "!EXCLAMATIONMARK", ":COLON", ";SEMICOLON"}
 PUNCTUATION_MAPPING = {}
 
 
-EOS_TOKENS = {".", "?", "!"}
+EOS_TOKENS = {".PERIOD", "?QUESTIONMARK", "!EXCLAMATIONMARK"}
 CRAP_TOKENS = {
     "<doc>",
     "<doc.>",
 }  # punctuations that are not included in vocabulary nor mapping, must be added to CRAP_TOKENS
-PAUSE_PREFIX = "<sil="
 
 # Función que cuenta las ocurrencias de cada palabra contenida en el vocabulario 
 def add_counts(word_counts, line):
@@ -225,7 +224,7 @@ def create_dev_test_train_split_and_vocabulary(
 
             path = os.path.join(root, filename)
 
-            if filename.endswith("dev.txt"):
+            if filename.endswith("val.txt"):
                 dev_txt_files.append(path)
 
             elif filename.endswith("train.txt"):
