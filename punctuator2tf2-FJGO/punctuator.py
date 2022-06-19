@@ -107,7 +107,5 @@ if __name__ == "__main__":
     if len(input_text) == 0:
         sys.exit("Input file empty.")
 
-    text = [w for w in input_text.split() if w not in punctuation_vocabulary and w not in data.PUNCTUATION_MAPPING and not w.startswith(data.PAUSE_PREFIX)] + [data.END]
-    pauses = [float(s.replace(data.PAUSE_PREFIX,"").replace(">","")) for s in input_text.split() if s.startswith(data.PAUSE_PREFIX)]
-
+    text = [w for w in input_text.split() if w not in punctuation_vocabulary and w not in data.PUNCTUATION_MAPPING] + [data.END]
     restore(output_file, text, word_vocabulary, reverse_punctuation_vocabulary, net)
